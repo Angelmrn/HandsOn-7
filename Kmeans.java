@@ -17,11 +17,13 @@ class KMeans {
         dataPoints.add(point);
     }
 
-    public void run() {
+    public void Kmeans() {
+        // Inicializar los centroides aleatoriamente
         initializeCentroids();
-        for (int i = 0; i < maxIterations; i++) {
-            assignClusters();
-            updateCentroids();
+        for (int i = 0; i < maxIterations; i++) {// Itera hasta maxIterations
+            assignClusters();// se asigna cada punto al cluster más cercano
+            updateCentroids();// se actualiza la posición de los centroides
+            
         }
     }
 
@@ -29,29 +31,32 @@ class KMeans {
         Random rand = new Random();
         for (int i = 0; i < k; i++) {
             int randomIndex = rand.nextInt(dataPoints.size());
+            // Agregar un nuevo centroide en la posición de un punto de datos aleatorio
             centroids.add(new DataPoint(dataPoints.get(randomIndex).getFeatures().clone()));
         }
     }
-
+    // asignar datos al cluster más cercano
     private void assignClusters() {
         for (DataPoint point : dataPoints) {
             double minDistance = Double.MAX_VALUE;
             int closestCluster = -1;
+
             for (int i = 0; i < centroids.size(); i++) {
                 double distance = point.distanceTo(centroids.get(i));
-                if (distance < minDistance) {
+                if (distance < minDistance) { // Si esta distancia es la menor encontrada
                     minDistance = distance;
-                    closestCluster = i;
+                    closestCluster = i; // se acctualiza el cluster más cercano
                 }
             }
-            point.setClusterId(closestCluster);
+            point.setClusterId(closestCluster); // se asigna el punto al cluster más cercano
         }
     }
 
     private void updateCentroids() {
+        //sumas de las características de cada cluster
         double[][] newCentroids = new double[k][dataPoints.get(0).getFeatures().length];
-        int[] pointsInCluster = new int[k];
-
+        int[] pointsInCluster = new int[k]; // Array para contar los puntos en cada cluster
+        //En cada dato acumular sus características en el cluster correspondiente
         for (DataPoint point : dataPoints) {
             int clusterId = point.getClusterId();
             double[] features = point.getFeatures();
@@ -67,6 +72,7 @@ class KMeans {
                     newCentroids[i][j] /= pointsInCluster[i];
                 }
             }
+            //Nuevo centroide
             centroids.set(i, new DataPoint(newCentroids[i]));
         }
     }
@@ -76,20 +82,32 @@ class KMeans {
 
         System.out.println("k = " + k);
         for (int i = 0; i < k; i++) {
+            System.out.println();
             System.out.println("Cluster " + i + ":");
             int clusterSize = 0; 
+
             for (DataPoint point : dataPoints) {
                 if (point.getClusterId() == i) {
                     clusterSize++;
+                    
+                    //Moastrar las características de cada cluster
                     /*for (double feature : point.getFeatures()) {
                         System.out.print(feature + "  ");
                     }
-                    System.out.println();/* */
+                    System.out.println(); */
                 }
             }
             clusterSizes[i] = clusterSize; // Guardar el tamaño del clúster
-            System.out.println("Datos en el clúster " + i + ": " + clusterSize);
-     
+            //System.out.println("Datos en el clúster " + i + ": " + clusterSize);
+            System.out.println("Porcentaje de datos en el clúster " + i + ": " + (clusterSize * 100) / dataPoints.size() + "%");
+            //Imprimir la posicion de los centroides
+            DataPoint centroid = centroids.get(i);
+            System.out.print("Posicion de Centroide: ");
+            for (double feature : centroid.getFeatures()) {
+            System.out.print(feature + "  ");
+            }
+            System.out.println();
+
         }
     }
 
@@ -104,8 +122,6 @@ class KMeans {
     }
     
 }
-
-
 
 class DataPoint {
     private double[] features;
