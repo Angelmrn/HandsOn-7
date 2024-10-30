@@ -111,16 +111,6 @@ class KMeans {
 
         }
     }
-
-    public double calculateWCSS() {
-        double wcss = 0.0;
-        for (DataPoint point : dataPoints) {
-            int clusterId = point.getClusterId();
-            DataPoint centroid = centroids.get(clusterId);
-            wcss += Math.pow(point.distanceTo(centroid), 2);
-        }
-        return wcss;
-    }
     
 }
 
