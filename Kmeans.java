@@ -23,9 +23,10 @@ class KMeans {
         for (int i = 0; i < maxIterations; i++) {// Itera hasta maxIterations
             assignClusters();// se asigna cada punto al cluster más cercano
             updateCentroids();// se actualiza la posición de los centroides
-            
+           
         }
     }
+  
 
     private void initializeCentroids() {
         Random rand = new Random();
