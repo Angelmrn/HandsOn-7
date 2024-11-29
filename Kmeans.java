@@ -1,3 +1,4 @@
+//Moran Flores Angel Daniel
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -107,10 +108,19 @@ class KMeans {
             for (double feature : centroid.getFeatures()) {
             System.out.print(feature + "  ");
             }
-            System.out.println();
+           
 
         }
     }
+
+    public double calculateWCSS() {
+    double wcss = 0.0;
+    for (DataPoint point : dataPoints) {
+        DataPoint centroid = centroids.get(point.getClusterId());
+        wcss += Math.pow(point.distanceTo(centroid), 2);
+    }
+    return wcss;
+}
     
 }
 
